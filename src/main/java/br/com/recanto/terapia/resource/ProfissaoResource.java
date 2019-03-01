@@ -56,14 +56,14 @@ public class ProfissaoResource {
 	
 	@GetMapping("{codigo}")
 	public ResponseEntity<?> recuperarPeloCodigo(@PathVariable Integer codigo) {
-		Profissao entidade = (Profissao) this.repositorEntidade.findOne(codigo);
+		Profissao entidade = (Profissao) this.repositorEntidade.getOne(codigo);
 		return entidade != null ? ResponseEntity.ok(entidade) : ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Integer codigo) {
-		this.repositorEntidade.delete(codigo);
+		this.entidadeService.delete(codigo);
 	}
 
 	@PutMapping("/{codigo}")

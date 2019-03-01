@@ -20,36 +20,37 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.recanto.terapia.evento.RecursoCriadoEvento;
-import br.com.recanto.terapia.model.TipoUsuario;
-import br.com.recanto.terapia.repository.TipoUsuarioRepository;
+import br.com.recanto.terapia.filter.UfFilter;
+import br.com.recanto.terapia.model.UF;
+import br.com.recanto.terapia.repository.UFRepository;
 
 @RestController
-@RequestMapping("/tipoUsuario")
-public class TipoUsuarioResource extends SuperResource<TipoUsuario>{
+@RequestMapping("/uf")
+public class UfResource extends SuperResource<UF>{
 
 	@Autowired
-	private TipoUsuarioRepository repositorEntidade;
+	private UFRepository ufRepository;
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	public ResponseEntity<?> listar(){
-		List<TipoUsuario> tipoUsuarios = this.repositorEntidade.findAll();
-		return !tipoUsuarios.isEmpty() ? ResponseEntity.ok(tipoUsuarios) : ResponseEntity.noContent().build();
+	public ResponseEntity<?> pesquisar(UfFilter filter){
+		List<UF> lista = this.ufRepository.filtrar(filter);
+		return !lista.isEmpty() ? ResponseEntity.ok(lista) : ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<TipoUsuario> criar(@Valid @RequestBody TipoUsuario entidade, HttpServletResponse response) {
-		TipoUsuario novoRegistro = this.repositorEntidade.save(entidade);
+	public ResponseEntity<UF> criar(@Valid @RequestBody UF entidade, HttpServletResponse response) {
+		UF novoRegistro = this.ufRepository.save(entidade);
 		this.publisher.publishEvent(new RecursoCriadoEvento(this, response, novoRegistro.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(novoRegistro);
 	}
 	
 	@GetMapping("{codigo}")
 	public ResponseEntity<?> recuperarPeloCodigo(@PathVariable Integer codigo) {
-		TipoUsuario entidade = this.repositorEntidade.getOne(codigo);
+		UF entidade = this.ufRepository.getOne(codigo);
 		return entidade != null ? ResponseEntity.ok(entidade) : ResponseEntity.notFound().build();
 	}
 	
@@ -60,11 +61,10 @@ public class TipoUsuarioResource extends SuperResource<TipoUsuario>{
 	}
 	
 	@PutMapping("/{codigo}")
-	public ResponseEntity<?> atualizar(@PathVariable Integer codigo, @Valid @RequestBody TipoUsuario entidade) {
-		super.getEntidadeService().setPersistentClass(TipoUsuario.class);
-		return ResponseEntity.ok(this.getEntidadeService().atualizar(entidade, codigo));
-		
+	public ResponseEntity<?> atualizar(@PathVariable Integer codigo, @Valid @RequestBody UF entidade) {
+		super.getEntidadeService().setPersistentClass(UF.class);
+		return ResponseEntity.ok(super.getEntidadeService().atualizar(entidade, codigo));
 	}
-	
+
 	
 }

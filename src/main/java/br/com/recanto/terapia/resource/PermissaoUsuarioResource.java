@@ -49,15 +49,15 @@ public class PermissaoUsuarioResource extends SuperResource<PermissaoUsuario>{
 	}
 	
 	@GetMapping("{codigo}")
-	public ResponseEntity<?> recuperarPeloCodigo(@PathVariable Integer codigo) {
-		PermissaoUsuario entidade = (PermissaoUsuario) this.permissaoRepository.findOne(codigo);
+	public ResponseEntity<PermissaoUsuario> recuperarPeloCodigo(@PathVariable Integer codigo) {
+		PermissaoUsuario entidade = (PermissaoUsuario) this.permissaoRepository.getOne(codigo);
 		return entidade != null ? ResponseEntity.ok(entidade) : ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Integer codigo) {
-		this.permissaoRepository.delete(codigo);
+		this.getEntidadeService().delete(codigo);
 	}
 	
 	@PutMapping("/{codigo}")

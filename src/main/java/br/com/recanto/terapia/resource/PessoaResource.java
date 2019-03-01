@@ -25,9 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.recanto.terapia.evento.RecursoCriadoEvento;
 import br.com.recanto.terapia.exceptionhandler.Erro;
 import br.com.recanto.terapia.exceptionhandler.PessoaInexistenteOuInativa;
+import br.com.recanto.terapia.filter.PessoaFilter;
 import br.com.recanto.terapia.model.Pessoa;
 import br.com.recanto.terapia.model.Usuario;
-import br.com.recanto.terapia.repository.usuario.permissao.PessoaRepository;
+import br.com.recanto.terapia.repository.pessoa.PessoaRepository;
 import br.com.recanto.terapia.service.UsuarioService;
 
 @RestController
@@ -47,9 +48,8 @@ public class PessoaResource extends SuperResource<Pessoa>{
 	private UsuarioService<Usuario> usuarioService;
 	
 	@GetMapping
-	public ResponseEntity<?> listar(){super.getEntidadeService();
-		List<Pessoa> pessoas = this.pessoaRepository.findAll();
-		return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.noContent().build();
+	public List<Pessoa> filtrar(PessoaFilter filter){
+		return this.pessoaRepository.filtrar(filter);
 	}
 	
 	@PostMapping
@@ -62,7 +62,7 @@ public class PessoaResource extends SuperResource<Pessoa>{
 	
 	@GetMapping("{codigo}")
 	public ResponseEntity<?> recuperarPeloCodigo(@PathVariable Integer codigo) {
-		Pessoa pessoa = this.pessoaRepository.findOne(codigo);
+		Pessoa pessoa = this.pessoaRepository.getOne(codigo);
 		return pessoa!= null ? ResponseEntity.ok(pessoa) : ResponseEntity.notFound().build();
 	}
 	

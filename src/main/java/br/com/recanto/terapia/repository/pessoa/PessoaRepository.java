@@ -1,4 +1,4 @@
-package br.com.recanto.terapia.repository.usuario.permissao;
+package br.com.recanto.terapia.repository.pessoa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

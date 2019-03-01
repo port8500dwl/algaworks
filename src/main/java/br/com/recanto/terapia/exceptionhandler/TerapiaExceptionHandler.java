@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -103,6 +104,32 @@ public class TerapiaExceptionHandler extends ResponseEntityExceptionHandler{
 		String mensagem = this.mensagemSourcoes.getMessage("preenchimento-invalido", null, LocaleContextHolder.getLocale());
 		String mensagemDesenvolvedor = ex.getMessage();
 		List<Erro> erros = Arrays.asList(new Erro(mensagem, mensagemDesenvolvedor));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+		
+	}
+
+	@ExceptionHandler({InvalidDataAccessApiUsageException.class})
+	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+	public ResponseEntity<Object> handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException ex, WebRequest request) {
+		String mensagem = this.mensagemSourcoes.getMessage("erro-montagem-sql", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ex.getMessage();
+		List<Erro> erros = Arrays.asList(new Erro(mensagem, mensagemDesenvolvedor));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+		
+	}
+
+	@ExceptionHandler({NullPointerException.class})
+	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+	public ResponseEntity<Object> handleNullPointerException(NullPointerException ex, WebRequest request) {
+		String mensagem = this.mensagemSourcoes.getMessage("erro-inesperado", null, LocaleContextHolder.getLocale());
+		StringBuilder mensagemDesenvolvedor = new StringBuilder();
+		mensagemDesenvolvedor.append(ex);
+		mensagemDesenvolvedor.append("\n::::"+ex.getStackTrace()[0]+"\n");
+		mensagemDesenvolvedor.append(ex.getStackTrace()[1]+"\n");
+		mensagemDesenvolvedor.append(ex.getStackTrace()[2]+"\n");
+		
+		
+		List<Erro> erros = Arrays.asList(new Erro(mensagem, String.valueOf(mensagemDesenvolvedor)));
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 		
 	}

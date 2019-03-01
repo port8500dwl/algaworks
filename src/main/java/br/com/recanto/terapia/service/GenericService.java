@@ -29,6 +29,11 @@ public class GenericService<T> {
 		return this.dao.save(p);
 	}
 
+	public void delete(Integer codigo) {
+		this.dao.delete(codigo);
+	}
+	
+	
 	public void setDao(Dao<T, Integer> dao) {
 		this.dao = dao;
 	}
@@ -44,6 +49,5 @@ public class GenericService<T> {
 	public Class<T> getPersistentClass() {
 		return persistentClass;
 	}
-
 
 }

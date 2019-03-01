@@ -13,4 +13,6 @@ public interface Dao<T, Integer> extends Serializable {
 
 	SuperPojo save(SuperPojo p);
 
+	public abstract void delete(java.lang.Integer codigo);
+
 }

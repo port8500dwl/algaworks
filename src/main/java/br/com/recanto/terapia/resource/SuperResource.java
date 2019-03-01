@@ -20,6 +20,5 @@ public class SuperResource<SuperPojo> {
 	public void setEntidadeService(GenericService<SuperPojo> entidadeService) {
 		this.entidadeService = entidadeService;
 	}
-	
-	
+
 }

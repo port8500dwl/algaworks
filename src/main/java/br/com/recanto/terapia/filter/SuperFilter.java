@@ -20,6 +20,8 @@ public class SuperFilter implements Serializable{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dataCadastroA;
 	
+	private Integer ativo;
+	
 	public String getNome() {
 		return nome;
 	}
@@ -37,6 +39,12 @@ public class SuperFilter implements Serializable{
 	}
 	public void setDataCadastroA(LocalDate dataCadastroA) {
 		this.dataCadastroA = dataCadastroA;
+	}
+	public Integer getAtivo() {
+		return ativo;
+	}
+	public void setAtivo(Integer ativo) {
+		this.ativo = ativo;
 	}
 	
 }

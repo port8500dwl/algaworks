@@ -49,14 +49,14 @@ public class TipoRespostaResource extends SuperResource<TipoResposta>{
 	
 	@GetMapping("{codigo}")
 	public ResponseEntity<?> recuperarPeloCodigo(@PathVariable Integer codigo) {
-		TipoResposta entidade = this.repositorEntidade.findOne(codigo);
+		TipoResposta entidade = this.repositorEntidade.getOne(codigo);
 		return entidade != null ? ResponseEntity.ok(entidade) : ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Integer codigo) {
-		this.repositorEntidade.delete(codigo);
+		this.getEntidadeService().delete(codigo);
 	}
 	
 	@PutMapping("/{codigo}")

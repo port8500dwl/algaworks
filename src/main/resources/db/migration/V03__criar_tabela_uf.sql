@@ -11,10 +11,11 @@ create table TB_UF
    DAT_CADASTRO         datetime,
    BOL_ATIVO            numeric(1,0),
    primary key (ID)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
 
-insert into tb_uf (STR_SIGLA, STR_NOME, dat_cadastro, BOL_ATIVO) values
-('DF', 'Distrito federal', '2019-02-20', 1),
-('BA', 'Bahia', '2019-02-20', 1),
-('MG', 'Minis Gerais', '2019-02-20',1),
-('AM', 'Amapá', '2019-02-20',1)
+insert into tb_uf (STR_SIGLA, STR_NOME, DAT_CADASTRO, BOL_ATIVO) values
+('DF', 'Distrito Federal', '2019-02-28', 1),
+('MA', 'Maranhão', '2019-02-28', 1),
+('MG', 'Minas Gerais', '2019-02-28', 1),
+('RJ', 'Rio de Janeiro', '2019-02-28', 1),
+('SP', 'São Paulo', '2019-02-28', 1)

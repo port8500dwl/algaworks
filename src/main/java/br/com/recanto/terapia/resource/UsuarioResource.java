@@ -20,8 +20,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.recanto.terapia.evento.RecursoCriadoEvento;
+import br.com.recanto.terapia.filter.UsuarioFilter;
 import br.com.recanto.terapia.model.Usuario;
-import br.com.recanto.terapia.repository.UsuarioRepository;
+import br.com.recanto.terapia.repository.usuario.UsuarioRepository;
 
 @RestController
 @RequestMapping("/usuario")
@@ -38,6 +39,12 @@ public class UsuarioResource extends SuperResource<Usuario>{
 		List<Usuario> tipoUsuarios = this.repositorEntidade.findAll();
 		return !tipoUsuarios.isEmpty() ? ResponseEntity.ok(tipoUsuarios) : ResponseEntity.noContent().build();
 	}
+
+	@GetMapping("/usuario/filtrar")
+	public List<Usuario> filtrar(UsuarioFilter filter){
+		return this.repositorEntidade.filtrar(filter);
+	}
+	
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -49,14 +56,14 @@ public class UsuarioResource extends SuperResource<Usuario>{
 	
 	@GetMapping("{codigo}")
 	public ResponseEntity<?> recuperarPeloCodigo(@PathVariable Integer codigo) {
-		Usuario entidade = this.repositorEntidade.findOne(codigo);
+		Usuario entidade = this.repositorEntidade.getOne(codigo);
 		return entidade != null ? ResponseEntity.ok(entidade) : ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Integer codigo) {
-		this.repositorEntidade.delete(codigo);
+		this.getEntidadeService().delete(codigo);
 	}
 	
 	@PutMapping("/{codigo}")
